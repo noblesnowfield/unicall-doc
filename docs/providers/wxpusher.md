@@ -59,6 +59,55 @@ await runtime.send({
 });
 ```
 
+## 配置文件模板
+
+`.env.local` 中至少填写 appToken 和接收目标：
+
+```dotenv
+UNICALL_WXPUSHER_DEFAULT_APP_TOKEN=你的_appToken
+UNICALL_WXPUSHER_DEFAULT_UIDS=UID_xxx
+UNICALL_WXPUSHER_DEFAULT_TOPIC_IDS=
+```
+
+`unicall.config.local.mjs` 中可以配置内置 HTML 模板：
+
+```js
+export default {
+  defaultProfile: process.env.UNICALL_PROFILE ?? 'default',
+  channels: {
+    wxpusher: {
+      default: {
+        appToken: process.env.UNICALL_WXPUSHER_DEFAULT_APP_TOKEN,
+        uids: process.env.UNICALL_WXPUSHER_DEFAULT_UIDS?.split(',') ?? [],
+        topicIds: []
+      }
+    }
+  },
+  templates: {
+    wxpusher: {
+      default: {
+        template: 'gameNotification',
+        templateOptions: {
+          appName: '通知应用',
+          eventName: 'WxPusher 提醒',
+          eventTitle: '发布完成',
+          eventDescription: '生产环境版本已经发布。',
+          actionUrl: 'https://example.com/releases',
+          actionText: '查看发布记录'
+        }
+      },
+      demo: {
+        template: 'rawHtml',
+        title: '自定义 HTML',
+        html: '<h1>巡检完成</h1><p>所有核心服务正常。</p>'
+      }
+    }
+  }
+};
+```
+
+`gameNotification` 会复用 SDK 内置模板；`rawHtml` 适合你自己写完整 HTML。更多写法见 [HTML 模板](/guide/html-templates)。
+
 ## 扫码拿 UID
 
 SDK 提供辅助方法：

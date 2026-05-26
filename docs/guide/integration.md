@@ -112,6 +112,47 @@ export default {
 };
 ```
 
+本地开发时建议使用这两个文件：
+
+```text
+unicall.config.local.mjs  管理 channels、profiles、templates
+.env.local                只存放真实 token、授权码、收件人等值
+```
+
+`unicall.config.local.mjs` 不应该直接写死敏感值，而是引用 `process.env`：
+
+```js
+export default {
+  defaultProfile: process.env.UNICALL_PROFILE ?? 'default',
+  channels: {
+    email: {
+      default: {
+        service: process.env.UNICALL_EMAIL_DEFAULT_SERVICE || 'qq',
+        user: process.env.UNICALL_EMAIL_DEFAULT_USER,
+        pass: process.env.UNICALL_EMAIL_DEFAULT_PASS,
+        from: process.env.UNICALL_EMAIL_DEFAULT_FROM,
+        fromName: process.env.UNICALL_EMAIL_DEFAULT_FROM_NAME ?? '通知应用',
+        to: process.env.UNICALL_EMAIL_DEFAULT_TO?.split(',') ?? []
+      }
+    }
+  },
+  templates: {
+    email: {
+      default: {
+        messageType: 'html',
+        template: 'gameNotification',
+        templateOptions: {
+          appName: '通知应用',
+          eventName: '服务提醒',
+          eventTitle: '每日巡检完成',
+          eventDescription: '所有核心接口均通过健康检查。'
+        }
+      }
+    }
+  }
+};
+```
+
 真实环境变量使用统一命名：
 
 ```text
@@ -125,3 +166,36 @@ UNICALL_PUSHPLUS_DEFAULT_TOKEN=
 UNICALL_EMAIL_DEFAULT_PASS=
 UNICALL_WXPUSHER_DEFAULT_APP_TOKEN=
 ```
+
+## 本地 env 配置流程
+
+从零开始配置本地提醒时，推荐按这个顺序：
+
+1. 复制 `.env.example` 为 `.env.local`。
+2. 复制 `unicall.config.example.mjs` 为 `unicall.config.local.mjs`。
+3. 在 `.env.local` 填真实值，例如 `UNICALL_PUSHPLUS_DEFAULT_TOKEN` 或 `UNICALL_EMAIL_DEFAULT_PASS`。
+4. 在 `unicall.config.local.mjs` 里选择 profile 和模板，例如 `templates.email.default`。
+5. 使用手动脚本或本地测试页发送提醒。
+
+手动脚本示例：
+
+```bash
+pnpm exec tsx scripts/send/email.ts --profile default
+pnpm exec tsx scripts/send/pushplus.ts --profile default
+pnpm exec tsx scripts/send/wxpusher.ts --profile default
+```
+
+本地测试页示例：
+
+```bash
+pnpm build
+pnpm run push:ui
+```
+
+然后打开：
+
+```text
+http://127.0.0.1:4317
+```
+
+如果你要发送 HTML 模板，先确认渠道支持 HTML，再查看 [HTML 模板](/guide/html-templates)。

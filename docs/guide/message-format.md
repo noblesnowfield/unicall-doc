@@ -51,6 +51,8 @@ await runtime.send({
 | WxPusher | 映射为 `contentType=2` |
 | 喵提醒 | 降级为文本摘要 |
 
+HTML 适合状态卡片、按钮、图片和富文本提醒。自定义 HTML 模板的开发、配置和本地测试方式见 [HTML 模板](/guide/html-templates)。
+
 ## 图片附件
 
 邮件 Provider 支持附件和内联图片：
@@ -87,6 +89,19 @@ SDK 已提供模板 demo：
 | `examples/templates/wxpusher-html.ts` | WxPusher HTML 测试 |
 
 通用游戏事件模板由 `createGameNotificationMessage()` 和 `createGameNotificationHtml()` 生成；邮件版本可使用 `createGameNotificationEmail()` 自动生成 HTML 正文和图片附件。
+
+自定义 HTML 模板建议写成普通函数，最终返回 `NotificationMessage`：
+
+```ts
+export function createDeployMessage() {
+  return {
+    title: '发布完成',
+    html: '<h1>发布完成</h1><p>生产环境版本已经发布。</p>'
+  };
+}
+```
+
+配置文件中的 `templates.<channel>.<profile>` 负责选择模板和模板参数，真实 token 仍然放在 `.env.local`。
 
 ## 格式降级规则
 

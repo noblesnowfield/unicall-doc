@@ -59,13 +59,69 @@ await runtime.send({
 }
 ```
 
+HTML 发送示例：
+
+```ts
+await runtime.send({
+  title: 'Unicall Pushplus HTML 测试',
+  html: '<h1>发布完成</h1><p>生产环境版本已经发布。</p>'
+});
+```
+
+如果 URL 使用 `template=html`，请确保消息里传入 `html`，否则 Provider 会按可用字段降级。
+
+## 配置文件模板
+
+`.env.local` 中填写真实 token：
+
+```dotenv
+UNICALL_PUSHPLUS_DEFAULT_TOKEN=你的_pushplus_token
+UNICALL_PUSHPLUS_DEFAULT_TOPIC=
+UNICALL_PUSHPLUS_DEFAULT_TEMPLATE=html
+```
+
+`unicall.config.local.mjs` 中可以为 Pushplus 配置 HTML 模板：
+
+```js
+export default {
+  defaultProfile: process.env.UNICALL_PROFILE ?? 'default',
+  channels: {
+    pushplus: {
+      default: {
+        token: process.env.UNICALL_PUSHPLUS_DEFAULT_TOKEN,
+        topic: process.env.UNICALL_PUSHPLUS_DEFAULT_TOPIC,
+        template: process.env.UNICALL_PUSHPLUS_DEFAULT_TEMPLATE ?? 'html'
+      }
+    }
+  },
+  templates: {
+    pushplus: {
+      default: {
+        messageType: 'html',
+        template: 'gameNotification',
+        templateOptions: {
+          appName: '通知应用',
+          eventName: 'Pushplus 提醒',
+          eventTitle: '发布完成',
+          eventDescription: '生产环境版本已经发布。',
+          actionUrl: 'https://example.com/releases',
+          actionText: '查看发布记录'
+        }
+      }
+    }
+  }
+};
+```
+
+HTML 模板的开发方式见 [HTML 模板](/guide/html-templates)。
+
 ## 手动测试
 
 ```bash
 pnpm exec tsx scripts/send/pushplus.ts --profile default
 ```
 
-脚本读取 `channels.pushplus.<profile>`，并使用 `examples/templates/pushplus-markdown.ts`。
+脚本读取 `channels.pushplus.<profile>`，并使用 `examples/templates/pushplus-markdown.ts`。如果要在页面里切换 `gameNotification` 或自定义 HTML 模板，请使用本地测试页 `pnpm run push:ui`。
 
 ## 错误与限制
 

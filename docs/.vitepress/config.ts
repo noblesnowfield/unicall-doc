@@ -21,7 +21,8 @@ export default defineConfig({
           { text: '快速开始', link: '/guide/getting-started' },
           { text: '接入方式', link: '/guide/integration' },
           { text: '核心概念', link: '/guide/concepts' },
-          { text: '消息格式', link: '/guide/message-format' }
+          { text: '消息格式', link: '/guide/message-format' },
+          { text: 'HTML 模板', link: '/guide/html-templates' }
         ]
       },
       {

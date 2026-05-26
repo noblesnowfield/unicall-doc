@@ -20,6 +20,8 @@ features:
     details: Runtime 只负责编排解析、Provider、Middleware 和错误结果，渠道逻辑保持插件化。
   - title: China-friendly Provider
     details: 首批覆盖 Webhook、Email、喵提醒、Pushplus、WxPusher，并为每个渠道保留 mock 测试和手动推送脚本。
+  - title: HTML 模板
+    details: 支持邮件、Pushplus、WxPusher 等 HTML 消息，文档提供 env、本地配置、自定义模板和测试页使用方式。
 ---
 
 ## 安装
@@ -48,3 +50,8 @@ await notify(
 ## 安全边界
 
 浏览器直连只适合无敏感凭据的公开接口或你自己的后端代理。不要把企业微信、飞书、钉钉、SMTP、WxPusher、Pushplus 等服务端密钥暴露在前端代码、HTML 或公开构建产物中。
+
+## 下一步
+
+- [快速开始](/guide/getting-started)：从 `.env.local` 配置到发送第一条提醒。
+- [HTML 模板](/guide/html-templates)：开发、配置和测试自定义 HTML 通知。

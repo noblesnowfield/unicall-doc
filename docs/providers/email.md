@@ -75,6 +75,71 @@ await runtime.send({
 
 SDK 也提供 `createGameNotificationEmail()`，用于生成游戏事件类 HTML 邮件和截图附件。
 
+如果你想自己写 HTML，可以直接传 `html` 字段：
+
+```ts
+await runtime.send({
+  title: '巡检完成',
+  html: `
+    <section style="font-family: Arial, sans-serif;">
+      <h1>巡检完成</h1>
+      <p>所有核心服务均通过健康检查。</p>
+    </section>
+  `
+});
+```
+
+邮件客户端对 CSS 支持不一致，建议使用行内样式，避免依赖复杂选择器、脚本或外部样式表。
+
+## 配置文件模板
+
+本地 `.env.local` 负责 SMTP 真实值：
+
+```dotenv
+UNICALL_EMAIL_DEFAULT_SERVICE=qq
+UNICALL_EMAIL_DEFAULT_USER=robot@qq.com
+UNICALL_EMAIL_DEFAULT_PASS=你的_smtp_授权码
+UNICALL_EMAIL_DEFAULT_FROM=robot@qq.com
+UNICALL_EMAIL_DEFAULT_FROM_NAME=通知应用
+UNICALL_EMAIL_DEFAULT_TO=admin@example.com
+```
+
+`unicall.config.local.mjs` 负责选择 HTML 模板：
+
+```js
+export default {
+  defaultProfile: process.env.UNICALL_PROFILE ?? 'default',
+  channels: {
+    email: {
+      default: {
+        service: process.env.UNICALL_EMAIL_DEFAULT_SERVICE || 'qq',
+        user: process.env.UNICALL_EMAIL_DEFAULT_USER,
+        pass: process.env.UNICALL_EMAIL_DEFAULT_PASS,
+        from: process.env.UNICALL_EMAIL_DEFAULT_FROM,
+        fromName: process.env.UNICALL_EMAIL_DEFAULT_FROM_NAME ?? '通知应用',
+        to: process.env.UNICALL_EMAIL_DEFAULT_TO?.split(',') ?? []
+      }
+    }
+  },
+  templates: {
+    email: {
+      default: {
+        messageType: 'html',
+        template: 'gameNotification',
+        templateOptions: {
+          appName: '通知应用',
+          eventName: '邮件提醒',
+          eventTitle: '每日巡检完成',
+          eventDescription: '所有核心接口均通过健康检查。',
+          actionUrl: 'https://example.com/report',
+          actionText: '查看报告'
+        }
+      }
+    }
+  }
+};
+```
+
 ## 手动测试
 
 ```bash
@@ -85,6 +150,8 @@ pnpm exec tsx scripts/send/email.ts --profile default
 
 - 渠道配置：`channels.email.<profile>`
 - 内容配置：`templates.email.<profile>`、`templates.email.default` 或 `templates.email.gameNotification`
+
+本地测试页还支持“自定义 HTML”表单，可直接编辑 `title` 和 `html` 字段验证邮件渲染。更完整的模板说明见 [HTML 模板](/guide/html-templates)。
 
 ## 限制
 
