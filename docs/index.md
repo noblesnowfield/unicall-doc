@@ -12,6 +12,9 @@ hero:
     - theme: alt
       text: Provider 文档
       link: /providers/webhook
+    - theme: alt
+      text: GitHub 仓库
+      link: https://github.com/noblesnowfield/unicall.git
 
 features:
   - title: URL 驱动
@@ -55,3 +58,4 @@ await notify(
 
 - [快速开始](/guide/getting-started)：从 `.env.local` 配置到发送第一条提醒。
 - [HTML 模板](/guide/html-templates)：开发、配置和测试自定义 HTML 通知。
+- [GitHub 仓库](https://github.com/noblesnowfield/unicall.git)：查看源码、提交 Issue 或参与贡献。

@@ -12,7 +12,8 @@ export default defineConfig({
       { text: '指南', link: '/guide/getting-started' },
       { text: 'API', link: '/api/runtime' },
       { text: 'Provider', link: '/providers/webhook' },
-      { text: '贡献', link: '/contribute/testing' }
+      { text: '贡献', link: '/contribute/testing' },
+      { text: 'GitHub', link: 'https://github.com/noblesnowfield/unicall.git' }
     ],
     sidebar: [
       {
@@ -67,6 +68,8 @@ export default defineConfig({
     search: {
       provider: 'local'
     },
-    socialLinks: []
+    socialLinks: [
+      { icon: 'github', link: 'https://github.com/noblesnowfield/unicall.git' }
+    ]
   }
 });
