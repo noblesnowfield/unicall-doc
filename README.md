@@ -59,7 +59,7 @@ pnpm docs:preview
 
 文档站通过 `.github/workflows/deploy-pages.yml` 自动部署到 GitHub Pages：
 
-1. 向 `master` 分支推送文档或配置变化。
+1. 向 `main` 分支推送文档或配置变化。
 2. GitHub Actions 执行 `pnpm install --frozen-lockfile` 和 `pnpm docs:build`。
 3. 将 `docs/.vitepress/dist` 作为静态页面产物发布。
 

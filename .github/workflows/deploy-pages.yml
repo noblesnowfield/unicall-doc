@@ -3,7 +3,7 @@ name: 部署文档站到 GitHub Pages
 on:
   push:
     branches:
-      - master
+      - main
   workflow_dispatch:
 
 permissions:
