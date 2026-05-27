@@ -4,6 +4,10 @@ Unicall 文档站，基于 VitePress，用于维护 Unicall 的使用说明、�
 
 GitHub 仓库：[noblesnowfield/unicall.git](https://github.com/noblesnowfield/unicall.git)
 
+线上文档站：[https://noblesnowfield.github.io/unicall-doc/](https://noblesnowfield.github.io/unicall-doc/)
+
+> 线上地址将在仓库首次完成 GitHub Pages Actions 部署后可访问。
+
 ## 文档范围
 
 当前文档站覆盖：
@@ -36,7 +40,7 @@ pnpm docs:dev
 默认访问：
 
 ```text
-http://127.0.0.1:5173
+http://127.0.0.1:5173/unicall-doc/
 ```
 
 ## 构建
@@ -49,6 +53,22 @@ pnpm docs:build
 
 ```bash
 pnpm docs:preview
+```
+
+## GitHub Pages 部署
+
+文档站通过 `.github/workflows/deploy-pages.yml` 自动部署到 GitHub Pages：
+
+1. 向 `main` 分支推送文档或配置变化。
+2. GitHub Actions 执行 `pnpm install --frozen-lockfile` 和 `pnpm docs:build`。
+3. 将 `docs/.vitepress/dist` 作为静态页面产物发布。
+
+仓库首次启用时，需要在 GitHub 的 `Settings -> Pages` 中将 `Source` 设置为 `GitHub Actions`。
+
+站点部署在项目子路径下，因此 VitePress 已配置：
+
+```ts
+base: '/unicall-doc/'
 ```
 
 ## 与主项目同步

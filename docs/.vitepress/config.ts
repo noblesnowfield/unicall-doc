@@ -4,6 +4,7 @@ export default defineConfig({
   title: 'Unicall',
   description: 'URL 驱动的轻量通知运行时',
   lang: 'zh-CN',
+  base: '/unicall-doc/',
   cleanUrls: true,
   lastUpdated: true,
   themeConfig: {
