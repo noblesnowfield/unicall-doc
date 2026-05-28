@@ -2,6 +2,18 @@
 
 Unicall 使用统一 `NotificationMessage` 描述消息内容。不同 Provider 会按自身能力选择最合适的格式。
 
+## 渠道支持概览
+
+| Provider | 文本 | Markdown | HTML | 附件 / 图片 |
+| :--- | :---: | :---: | :---: | :---: |
+| Webhook | 支持 | 透传 | 透传 | 透传 |
+| Email / SMTP | 支持 | 支持 | 支持 | 支持 |
+| 喵提醒 | 支持 | 降级为文本 | 降级为文本 | 不支持 |
+| Pushplus | 支持 | 支持 | 支持 | 不支持 |
+| WxPusher | 支持 | 支持 | 支持 | 不支持 |
+
+图片附件当前主要由 Email Provider 原生支持。Pushplus、WxPusher、喵提醒不发送二进制附件；如需展示图片，建议使用可公开访问的远程图片 URL 放入 HTML 或文本内容。更细的渠道说明见 [渠道消息类型支持](/providers/message-types)。
+
 ## 文本
 
 ```ts

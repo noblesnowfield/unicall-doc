@@ -12,7 +12,7 @@ export default defineConfig({
     nav: [
       { text: '指南', link: '/guide/getting-started' },
       { text: 'API', link: '/api/runtime' },
-      { text: 'Provider', link: '/providers/webhook' },
+      { text: 'Provider', link: '/providers/message-types' },
       { text: '贡献', link: '/contribute/testing' },
       { text: 'GitHub', link: 'https://github.com/noblesnowfield/unicall.git' }
     ],
@@ -37,6 +37,7 @@ export default defineConfig({
       {
         text: 'Provider',
         items: [
+          { text: '消息类型支持', link: '/providers/message-types' },
           { text: 'Webhook', link: '/providers/webhook' },
           { text: 'Email / SMTP', link: '/providers/email' },
           { text: '喵提醒', link: '/providers/miaotixing' },
