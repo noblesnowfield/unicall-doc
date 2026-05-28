@@ -9,15 +9,15 @@ Unicall 是一个 URL 驱动的轻量通知运行时 SDK。实际使用时推荐
 ::: code-group
 
 ```bash [pnpm]
-pnpm add unicall
+pnpm add @noblesnowfield/unicall
 ```
 
 ```bash [npm]
-npm install unicall
+npm install @noblesnowfield/unicall
 ```
 
 ```bash [yarn]
-yarn add unicall
+yarn add @noblesnowfield/unicall
 ```
 
 :::
@@ -173,12 +173,17 @@ http://127.0.0.1:4317
 
 测试页会读取 `unicall.config.local.mjs` 和 `.env.local`；如果本地配置不存在，会回退到 `unicall.config.example.mjs`。修改源码、模板或配置示例后，需要重新 `pnpm build` 并重启 `pnpm run push:ui`。
 
+WxPusher 扫码绑定在测试页里分为两种方式：
+
+- 不搭服务器：点击 `开始扫码绑定`，页面会自动创建临时二维码、开始轮询扫码 UID，并把获取到的 UID 回填到 `uids`。
+- 搭服务器：把 WxPusher 后台回调地址配置为公网 HTTPS 地址，测试页会自动监听 `/api/wxpusher/callbacks` 并回填 UID。
+
 ## 代码中发送
 
 如果你已经有一个后端服务，也可以直接调用 SDK：
 
 ```ts
-import { createDefaultProviderRegistry, notify } from 'unicall';
+import { createDefaultProviderRegistry, notify } from '@noblesnowfield/unicall';
 
 const results = await notify(
   'webhook://127.0.0.1:4317/mock/webhook?scheme=http&method=POST',
@@ -202,7 +207,7 @@ import {
   createDefaultProviderRegistry,
   retryMiddleware,
   timeoutMiddleware
-} from 'unicall';
+} from '@noblesnowfield/unicall';
 
 const runtime = new NotificationRuntime({
   registry: createDefaultProviderRegistry(),

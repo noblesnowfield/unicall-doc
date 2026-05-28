@@ -7,15 +7,15 @@ Unicall 的目标是同时服务 npm 包接入和浏览器构建产物接入。N
 ::: code-group
 
 ```bash [pnpm]
-pnpm add unicall
+pnpm add @noblesnowfield/unicall
 ```
 
 ```bash [npm]
-npm install unicall
+npm install @noblesnowfield/unicall
 ```
 
 ```bash [yarn]
-yarn add unicall
+yarn add @noblesnowfield/unicall
 ```
 
 :::
@@ -23,7 +23,7 @@ yarn add unicall
 ## Node.js ESM
 
 ```ts
-import { createDefaultProviderRegistry, notify } from 'unicall';
+import { createDefaultProviderRegistry, notify } from '@noblesnowfield/unicall';
 
 await notify(
   'pushplus://PUSHPLUS_TOKEN?template=markdown',
@@ -197,5 +197,7 @@ pnpm run push:ui
 ```text
 http://127.0.0.1:4317
 ```
+
+WxPusher 需要绑定用户 UID 时，本地测试页提供两条路径：不搭服务器时点击 `开始扫码绑定`，页面自动创建参数二维码并轮询回填 UID；搭服务器时配置公网回调地址，测试页收到回调后也会自动回填 UID。
 
 如果你要发送 HTML 模板，先确认渠道支持 HTML，再查看 [HTML 模板](/guide/html-templates)。

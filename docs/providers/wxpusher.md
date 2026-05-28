@@ -114,13 +114,49 @@ SDK 提供辅助方法：
 
 - `createWxPusherQrCode()`：创建参数二维码。
 - `queryWxPusherQrCodeUid()`：根据二维码 code 查询扫码 UID。
+- `waitForWxPusherQrCodeUid()`：按官方要求每 10 秒轮询扫码 UID，适合没有公网服务器的本地绑定流程。
 - `parseWxPusherCallback()`：解析 WxPusher 后台回调事件。
 
-本地测试页可以展示应用二维码、生成参数二维码、查询 UID，并接收回调。WxPusher 后台回调地址必须是公网可访问地址；本地联调可用内网穿透转发到：
+### 不搭服务器：参数二维码轮询
+
+不准备公网服务时，使用参数二维码即可。测试页会自动完成：
+
+1. 创建临时参数二维码。
+2. 展示二维码给用户扫码。
+3. 每 10 秒查询一次扫码 UID。
+4. 获取到 `UID_xxx` 后自动回填到 `uids`。
+
+```ts
+import {
+  createWxPusherQrCode,
+  waitForWxPusherQrCodeUid
+} from '@noblesnowfield/unicall';
+
+const qrCode = await createWxPusherQrCode({
+  appToken: process.env.UNICALL_WXPUSHER_DEFAULT_APP_TOKEN!,
+  extra: 'unicall-local-test',
+  validTime: 1800
+});
+
+const result = await waitForWxPusherQrCodeUid({
+  code: qrCode.code!,
+  timeoutMs: 120_000
+});
+
+console.log(result.uid);
+```
+
+### 搭服务器：公网回调
+
+如果你有自己的后端服务，可以在 WxPusher 后台配置公网 HTTPS 回调地址。用户扫码关注应用后，WxPusher 会把 UID 主动回调给你，服务端可用 `parseWxPusherCallback()` 解析并保存。
+
+WxPusher 后台回调地址必须是公网可访问地址；本地联调可用内网穿透转发到：
 
 ```text
 http://127.0.0.1:4317/api/wxpusher/callback
 ```
+
+本地测试页会自动轮询 `/api/wxpusher/callbacks`，收到回调后同样会把 UID 回填到 `uids`。
 
 ## 手动测试
 

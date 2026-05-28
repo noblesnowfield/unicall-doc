@@ -30,13 +30,13 @@ features:
 ## 安装
 
 ```bash
-pnpm add unicall
+pnpm add @noblesnowfield/unicall
 ```
 
 ## 快速发送
 
 ```ts
-import { createDefaultProviderRegistry, notify } from 'unicall';
+import { createDefaultProviderRegistry, notify } from '@noblesnowfield/unicall';
 
 await notify(
   'webhook://127.0.0.1:4317/mock/webhook?scheme=http&method=POST',
